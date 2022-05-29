@@ -1,0 +1,6 @@
+CREATE TABLE IF NOT EXISTS wallets (
+    id VARCHAR NOT NULL,
+    owner VARCHAR NOT NULL,
+
+    PRIMARY KEY (id)
+);
