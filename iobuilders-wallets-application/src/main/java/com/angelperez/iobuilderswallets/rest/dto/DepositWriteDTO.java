@@ -10,16 +10,10 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @Accessors(chain = true)
-public class MovementDTO {
+public class DepositWriteDTO {
 
-    private Long id;
-
-    private String originWallet;
-
-    private String destinyWallet;
+    private String walletId;
 
     private BigDecimal amount;
-
-    private LocalDateTime creationTime;
 
 }

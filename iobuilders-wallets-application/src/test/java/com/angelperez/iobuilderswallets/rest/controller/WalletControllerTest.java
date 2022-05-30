@@ -3,7 +3,8 @@ package com.angelperez.iobuilderswallets.rest.controller;
 import com.angelperez.iobuilderswallets.applicationports.WalletsService;
 import com.angelperez.iobuilderswallets.common.OperationResult;
 import com.angelperez.iobuilderswallets.model.Wallet;
-import com.angelperez.iobuilderswallets.rest.dto.WalletDTO;
+import com.angelperez.iobuilderswallets.rest.dto.WalletReadDTO;
+import com.angelperez.iobuilderswallets.rest.dto.WalletWriteDTO;
 import com.angelperez.iobuilderswallets.rest.mapper.WalletsMapperImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.MethodOrderer;
@@ -39,12 +40,12 @@ public class WalletControllerTest {
             .setAlias("testAlias")
             .setBalance(BigDecimal.TEN)));
 
-        Mono<ResponseEntity<WalletDTO>> result = walletController.getWalletById("testId");
+        Mono<ResponseEntity<WalletReadDTO>> result = walletController.getWalletById("testId");
 
         assertThat(result.block()).satisfies(
             res -> {
                 assertThat(res.getStatusCode()).isEqualTo(HttpStatus.OK);
-                assertThat(res.getBody()).isEqualTo(new WalletDTO()
+                assertThat(res.getBody()).isEqualTo(new WalletReadDTO()
                     .setId("testId")
                     .setOwner("testOwner")
                     .setAlias("testAlias")
@@ -57,7 +58,7 @@ public class WalletControllerTest {
     public void getWalletById_onNotExistingWallet_returnsNotFound() {
         Mockito.when(walletsService.getWallet("testId")).thenReturn(Mono.empty());
 
-        Mono<ResponseEntity<WalletDTO>> result = walletController.getWalletById("testId");
+        Mono<ResponseEntity<WalletReadDTO>> result = walletController.getWalletById("testId");
 
         assertThat(result.block())
             .isNotNull()
@@ -70,16 +71,14 @@ public class WalletControllerTest {
         Wallet wallet = new Wallet()
             .setId("testId")
             .setOwner("testOwner")
-            .setAlias("testAlias")
-            .setBalance(BigDecimal.TEN);
+            .setAlias("testAlias");
 
         Mockito.when(walletsService.saveWallet(wallet)).thenReturn(Mono.just(OperationResult.OK));
 
-        Mono<ResponseEntity<Void>> result = walletController.createWallet(new WalletDTO()
+        Mono<ResponseEntity<Void>> result = walletController.createWallet(new WalletWriteDTO()
             .setId("testId")
             .setOwner("testOwner")
-            .setAlias("testAlias")
-            .setBalance(BigDecimal.TEN));
+            .setAlias("testAlias"));
 
         assertThat(result.block())
             .isNotNull()
@@ -92,16 +91,14 @@ public class WalletControllerTest {
         Wallet wallet = new Wallet()
             .setId("testId")
             .setOwner("testOwner")
-            .setAlias("testAlias")
-            .setBalance(BigDecimal.TEN);
+            .setAlias("testAlias");
 
         Mockito.when(walletsService.saveWallet(wallet)).thenReturn(Mono.just(OperationResult.CONFLICT));
 
-        Mono<ResponseEntity<Void>> result = walletController.createWallet(new WalletDTO()
+        Mono<ResponseEntity<Void>> result = walletController.createWallet(new WalletWriteDTO()
             .setId("testId")
             .setOwner("testOwner")
-            .setAlias("testAlias")
-            .setBalance(BigDecimal.TEN));
+            .setAlias("testAlias"));
 
         assertThat(result.block())
             .isNotNull()
@@ -114,16 +111,14 @@ public class WalletControllerTest {
         Wallet wallet = new Wallet()
             .setId("testId")
             .setOwner("testOwner")
-            .setAlias("testAlias")
-            .setBalance(BigDecimal.TEN);
+            .setAlias("testAlias");
 
         Mockito.when(walletsService.saveWallet(wallet)).thenReturn(Mono.just(OperationResult.ERROR));
 
-        Mono<ResponseEntity<Void>> result = walletController.createWallet(new WalletDTO()
+        Mono<ResponseEntity<Void>> result = walletController.createWallet(new WalletWriteDTO()
             .setId("testId")
             .setOwner("testOwner")
-            .setAlias("testAlias")
-            .setBalance(BigDecimal.TEN));
+            .setAlias("testAlias"));
 
         assertThat(result.block())
             .isNotNull()
@@ -136,16 +131,14 @@ public class WalletControllerTest {
         Wallet wallet = new Wallet()
             .setId("testId")
             .setOwner("testOwner")
-            .setAlias("testAlias")
-            .setBalance(BigDecimal.TEN);
+            .setAlias("testAlias");
 
         Mockito.when(walletsService.updateWallet(wallet)).thenReturn(Mono.just(OperationResult.OK));
 
-        Mono<ResponseEntity<Void>> result = walletController.updateWallet(new WalletDTO()
+        Mono<ResponseEntity<Void>> result = walletController.updateWallet(new WalletWriteDTO()
             .setId("testId")
             .setOwner("testOwner")
-            .setAlias("testAlias")
-            .setBalance(BigDecimal.TEN));
+            .setAlias("testAlias"));
 
         assertThat(result.block())
             .isNotNull()
@@ -158,16 +151,14 @@ public class WalletControllerTest {
         Wallet wallet = new Wallet()
             .setId("testId")
             .setOwner("testOwner")
-            .setAlias("testAlias")
-            .setBalance(BigDecimal.TEN);
+            .setAlias("testAlias");
 
         Mockito.when(walletsService.updateWallet(wallet)).thenReturn(Mono.just(OperationResult.NOT_FOUND));
 
-        Mono<ResponseEntity<Void>> result = walletController.updateWallet(new WalletDTO()
+        Mono<ResponseEntity<Void>> result = walletController.updateWallet(new WalletWriteDTO()
             .setId("testId")
             .setOwner("testOwner")
-            .setAlias("testAlias")
-            .setBalance(BigDecimal.TEN));
+            .setAlias("testAlias"));
 
         assertThat(result.block())
             .isNotNull()
@@ -180,16 +171,14 @@ public class WalletControllerTest {
         Wallet wallet = new Wallet()
             .setId("testId")
             .setOwner("testOwner")
-            .setAlias("testAlias")
-            .setBalance(BigDecimal.TEN);
+            .setAlias("testAlias");
 
         Mockito.when(walletsService.updateWallet(wallet)).thenReturn(Mono.just(OperationResult.ERROR));
 
-        Mono<ResponseEntity<Void>> result = walletController.updateWallet(new WalletDTO()
+        Mono<ResponseEntity<Void>> result = walletController.updateWallet(new WalletWriteDTO()
             .setId("testId")
             .setOwner("testOwner")
-            .setAlias("testAlias")
-            .setBalance(BigDecimal.TEN));
+            .setAlias("testAlias"));
 
         assertThat(result.block())
             .isNotNull()

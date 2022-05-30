@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @Accessors(chain = true)
-public class DepositDTO {
+public class DepositReadDTO {
 
     private Long id;
 
@@ -18,6 +18,6 @@ public class DepositDTO {
 
     private BigDecimal amount;
 
-    private LocalDateTime requestTime;
+    private LocalDateTime creationTime;
 
 }

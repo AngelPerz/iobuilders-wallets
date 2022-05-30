@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 @Data
 @NoArgsConstructor
 @Accessors(chain = true)
-public class WalletDTO {
+public class WalletReadDTO {
 
     private String id;
 

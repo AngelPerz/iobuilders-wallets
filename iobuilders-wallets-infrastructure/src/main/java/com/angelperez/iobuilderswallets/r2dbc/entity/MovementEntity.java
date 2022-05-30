@@ -30,9 +30,9 @@ public class MovementEntity implements Persistable<Long> {
 
     private BigDecimal amount;
 
-    @Column("request_time")
+    @Column("creation_time")
     @CreatedDate
-    private LocalDateTime requestTime;
+    private LocalDateTime creationTime;
 
     @Transient
     private boolean isNew;

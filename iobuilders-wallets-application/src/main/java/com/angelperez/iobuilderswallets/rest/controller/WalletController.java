@@ -1,7 +1,8 @@
 package com.angelperez.iobuilderswallets.rest.controller;
 
 import com.angelperez.iobuilderswallets.applicationports.WalletsService;
-import com.angelperez.iobuilderswallets.rest.dto.WalletDTO;
+import com.angelperez.iobuilderswallets.rest.dto.WalletReadDTO;
+import com.angelperez.iobuilderswallets.rest.dto.WalletWriteDTO;
 import com.angelperez.iobuilderswallets.rest.mapper.WalletsMapper;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -23,7 +24,7 @@ public class WalletController {
         @ApiResponse(responseCode = "200", description = "Wallet retrieved for the given id"),
         @ApiResponse(responseCode = "404", description = "Wallet not found")})
     @GetMapping("/wallets/{id}")
-    public Mono<ResponseEntity<WalletDTO>> getWalletById(@PathVariable(value = "id") String id) {
+    public Mono<ResponseEntity<WalletReadDTO>> getWalletById(@PathVariable(value = "id") String id) {
         return walletsService.getWallet(id)
             .map(t -> ResponseEntity.ok(walletsMapper.toDTO(t)))
             .defaultIfEmpty(ResponseEntity.notFound().build());
@@ -33,7 +34,7 @@ public class WalletController {
         @ApiResponse(responseCode = "201", description = "Wallet created"),
         @ApiResponse(responseCode = "409", description = "Wallet already exists")})
     @PostMapping("/wallets")
-    public Mono<ResponseEntity<Void>> createWallet(@RequestBody WalletDTO walletDTO) {
+    public Mono<ResponseEntity<Void>> createWallet(@RequestBody WalletWriteDTO walletDTO) {
         return walletsService.saveWallet(walletsMapper.toDomainModel(walletDTO))
             .map(res -> switch (res) {
                 case OK -> new ResponseEntity<>(HttpStatus.CREATED);
@@ -46,7 +47,7 @@ public class WalletController {
         @ApiResponse(responseCode = "200", description = "Wallet updated"),
         @ApiResponse(responseCode = "404", description = "Wallet not found")})
     @PutMapping("/wallets")
-    public Mono<ResponseEntity<Void>> updateWallet(@RequestBody WalletDTO walletDTO) {
+    public Mono<ResponseEntity<Void>> updateWallet(@RequestBody WalletWriteDTO walletDTO) {
         return walletsService.updateWallet(walletsMapper.toDomainModel(walletDTO))
             .map(res -> switch (res) {
                 case OK -> new ResponseEntity<>(HttpStatus.OK);

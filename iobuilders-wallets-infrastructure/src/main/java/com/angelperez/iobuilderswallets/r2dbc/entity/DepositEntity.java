@@ -27,9 +27,8 @@ public class DepositEntity implements Persistable<Long> {
 
     private BigDecimal amount;
 
-    @Column("request_time")
-    @CreatedDate
-    private LocalDateTime requestTime;
+    @Column("creation_time")
+    private LocalDateTime creationTime;
 
     @Transient
     private boolean isNew;

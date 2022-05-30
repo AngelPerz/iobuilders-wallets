@@ -18,6 +18,6 @@ public class Deposit {
 
     private BigDecimal amount;
 
-    private LocalDateTime requestTime;
+    private LocalDateTime creationTime;
 
 }

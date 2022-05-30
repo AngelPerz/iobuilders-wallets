@@ -5,21 +5,16 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
 @Accessors(chain = true)
-public class MovementDTO {
+public class WalletWriteDTO {
 
-    private Long id;
+    private String id;
 
-    private String originWallet;
+    private String owner;
 
-    private String destinyWallet;
-
-    private BigDecimal amount;
-
-    private LocalDateTime creationTime;
+    private String alias;
 
 }

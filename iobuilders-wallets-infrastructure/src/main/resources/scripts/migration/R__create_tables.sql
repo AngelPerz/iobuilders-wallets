@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS movements (
     origin_wallet VARCHAR NOT NULL,
     destiny_wallet VARCHAR NOT NULL,
     amount NUMERIC,
-    request_time TIMESTAMP,
+    creation_time TIMESTAMP,
     PRIMARY KEY (id),
     FOREIGN KEY (origin_wallet) REFERENCES wallets(id),
     FOREIGN KEY (destiny_wallet) REFERENCES wallets(id)
@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS deposits (
     id SERIAL,
     wallet_id VARCHAR NOT NULL,
     amount NUMERIC,
-    request_time TIMESTAMP,
+    creation_time TIMESTAMP,
     PRIMARY KEY (id),
     FOREIGN KEY (wallet_id) REFERENCES wallets(id)
 );
