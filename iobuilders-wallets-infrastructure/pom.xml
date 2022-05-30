@@ -47,4 +47,25 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-maven-plugin</artifactId>
+                <configuration>
+                    <driver>org.postgresql.Driver</driver>
+                    <url>jdbc:postgresql://localhost:5432/postgres</url>
+                    <user>postgres</user>
+                    <password>postgres</password>
+                    <baselineOnMigrate>true</baselineOnMigrate>
+                    <schemas>wallets</schemas>
+                    <locations>
+                        <location>
+                            classpath:scripts/migration
+                        </location>
+                    </locations>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>

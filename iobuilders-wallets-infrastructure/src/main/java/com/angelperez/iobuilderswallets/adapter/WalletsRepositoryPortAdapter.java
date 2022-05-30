@@ -72,9 +72,8 @@ public class WalletsRepositoryPortAdapter implements WalletsRepositoryPort {
     }
 
     private WalletEntity mergeWalletProperties(WalletEntity walletEntity, Wallet wallet) {
-        return walletEntity.setName(wallet.getName())
-            .setSurname(wallet.getSurname())
-            .setEmail(wallet.getEmail())
-            .setPhone(wallet.getPhone());
+        return walletEntity.setOwner(wallet.getOwner())
+            .setAlias(wallet.getAlias())
+            .setBalance(wallet.getBalance());
     }
 }

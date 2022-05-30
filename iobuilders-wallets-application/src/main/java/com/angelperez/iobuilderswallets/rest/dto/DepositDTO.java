@@ -5,18 +5,19 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
 @Accessors(chain = true)
-public class WalletDTO {
+public class DepositDTO {
 
-    private String id;
+    private Long id;
 
-    private String owner;
+    private String walletId;
 
-    private String alias;
+    private BigDecimal amount;
 
-    private BigDecimal balance;
+    private LocalDateTime requestTime;
 
 }

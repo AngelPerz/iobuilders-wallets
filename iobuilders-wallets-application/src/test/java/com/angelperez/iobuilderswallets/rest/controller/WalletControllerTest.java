@@ -14,6 +14,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import reactor.core.publisher.Mono;
 
+import java.math.BigDecimal;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @TestMethodOrder(MethodOrderer.MethodName.class)
@@ -33,10 +35,9 @@ public class WalletControllerTest {
     public void getWalletById_onExistingWallet_returnsTheWallet() {
         Mockito.when(walletsService.getWallet("testId")).thenReturn(Mono.just(new Wallet()
             .setId("testId")
-            .setEmail("testEmail")
-            .setPhone(666999666)
-            .setName("testName")
-            .setSurname("testSurname")));
+            .setOwner("testOwner")
+            .setAlias("testAlias")
+            .setBalance(BigDecimal.TEN)));
 
         Mono<ResponseEntity<WalletDTO>> result = walletController.getWalletById("testId");
 
@@ -45,10 +46,9 @@ public class WalletControllerTest {
                 assertThat(res.getStatusCode()).isEqualTo(HttpStatus.OK);
                 assertThat(res.getBody()).isEqualTo(new WalletDTO()
                     .setId("testId")
-                    .setEmail("testEmail")
-                    .setPhone(666999666)
-                    .setName("testName")
-                    .setSurname("testSurname"));
+                    .setOwner("testOwner")
+                    .setAlias("testAlias")
+                    .setBalance(BigDecimal.TEN));
             }
         );
     }
@@ -69,19 +69,17 @@ public class WalletControllerTest {
     public void createWallet_onNewWallet_returnsCreated() {
         Wallet wallet = new Wallet()
             .setId("testId")
-            .setEmail("testEmail")
-            .setPhone(666999666)
-            .setName("testName")
-            .setSurname("testSurname");
+            .setOwner("testOwner")
+            .setAlias("testAlias")
+            .setBalance(BigDecimal.TEN);
 
         Mockito.when(walletsService.saveWallet(wallet)).thenReturn(Mono.just(OperationResult.OK));
 
         Mono<ResponseEntity<Void>> result = walletController.createWallet(new WalletDTO()
             .setId("testId")
-            .setEmail("testEmail")
-            .setPhone(666999666)
-            .setName("testName")
-            .setSurname("testSurname"));
+            .setOwner("testOwner")
+            .setAlias("testAlias")
+            .setBalance(BigDecimal.TEN));
 
         assertThat(result.block())
             .isNotNull()
@@ -93,19 +91,17 @@ public class WalletControllerTest {
     public void createWallet_onExistingWallet_returnsConflict() {
         Wallet wallet = new Wallet()
             .setId("testId")
-            .setEmail("testEmail")
-            .setPhone(666999666)
-            .setName("testName")
-            .setSurname("testSurname");
+            .setOwner("testOwner")
+            .setAlias("testAlias")
+            .setBalance(BigDecimal.TEN);
 
         Mockito.when(walletsService.saveWallet(wallet)).thenReturn(Mono.just(OperationResult.CONFLICT));
 
         Mono<ResponseEntity<Void>> result = walletController.createWallet(new WalletDTO()
             .setId("testId")
-            .setEmail("testEmail")
-            .setPhone(666999666)
-            .setName("testName")
-            .setSurname("testSurname"));
+            .setOwner("testOwner")
+            .setAlias("testAlias")
+            .setBalance(BigDecimal.TEN));
 
         assertThat(result.block())
             .isNotNull()
@@ -117,19 +113,17 @@ public class WalletControllerTest {
     public void createWallet_onErrorAtSaving_returnsError() {
         Wallet wallet = new Wallet()
             .setId("testId")
-            .setEmail("testEmail")
-            .setPhone(666999666)
-            .setName("testName")
-            .setSurname("testSurname");
+            .setOwner("testOwner")
+            .setAlias("testAlias")
+            .setBalance(BigDecimal.TEN);
 
         Mockito.when(walletsService.saveWallet(wallet)).thenReturn(Mono.just(OperationResult.ERROR));
 
         Mono<ResponseEntity<Void>> result = walletController.createWallet(new WalletDTO()
             .setId("testId")
-            .setEmail("testEmail")
-            .setPhone(666999666)
-            .setName("testName")
-            .setSurname("testSurname"));
+            .setOwner("testOwner")
+            .setAlias("testAlias")
+            .setBalance(BigDecimal.TEN));
 
         assertThat(result.block())
             .isNotNull()
@@ -141,19 +135,17 @@ public class WalletControllerTest {
     public void updateWallet_onExistingWallet_returnsOk() {
         Wallet wallet = new Wallet()
             .setId("testId")
-            .setEmail("testEmail")
-            .setPhone(666999666)
-            .setName("testName")
-            .setSurname("testSurname");
+            .setOwner("testOwner")
+            .setAlias("testAlias")
+            .setBalance(BigDecimal.TEN);
 
         Mockito.when(walletsService.updateWallet(wallet)).thenReturn(Mono.just(OperationResult.OK));
 
         Mono<ResponseEntity<Void>> result = walletController.updateWallet(new WalletDTO()
             .setId("testId")
-            .setEmail("testEmail")
-            .setPhone(666999666)
-            .setName("testName")
-            .setSurname("testSurname"));
+            .setOwner("testOwner")
+            .setAlias("testAlias")
+            .setBalance(BigDecimal.TEN));
 
         assertThat(result.block())
             .isNotNull()
@@ -165,19 +157,17 @@ public class WalletControllerTest {
     public void updateWallet_onNewWallet_returnsNotFound() {
         Wallet wallet = new Wallet()
             .setId("testId")
-            .setEmail("testEmail")
-            .setPhone(666999666)
-            .setName("testName")
-            .setSurname("testSurname");
+            .setOwner("testOwner")
+            .setAlias("testAlias")
+            .setBalance(BigDecimal.TEN);
 
         Mockito.when(walletsService.updateWallet(wallet)).thenReturn(Mono.just(OperationResult.NOT_FOUND));
 
         Mono<ResponseEntity<Void>> result = walletController.updateWallet(new WalletDTO()
             .setId("testId")
-            .setEmail("testEmail")
-            .setPhone(666999666)
-            .setName("testName")
-            .setSurname("testSurname"));
+            .setOwner("testOwner")
+            .setAlias("testAlias")
+            .setBalance(BigDecimal.TEN));
 
         assertThat(result.block())
             .isNotNull()
@@ -189,19 +179,17 @@ public class WalletControllerTest {
     public void updateWallet_onErrorAtUpdating_returnsError() {
         Wallet wallet = new Wallet()
             .setId("testId")
-            .setEmail("testEmail")
-            .setPhone(666999666)
-            .setName("testName")
-            .setSurname("testSurname");
+            .setOwner("testOwner")
+            .setAlias("testAlias")
+            .setBalance(BigDecimal.TEN);
 
         Mockito.when(walletsService.updateWallet(wallet)).thenReturn(Mono.just(OperationResult.ERROR));
 
         Mono<ResponseEntity<Void>> result = walletController.updateWallet(new WalletDTO()
             .setId("testId")
-            .setEmail("testEmail")
-            .setPhone(666999666)
-            .setName("testName")
-            .setSurname("testSurname"));
+            .setOwner("testOwner")
+            .setAlias("testAlias")
+            .setBalance(BigDecimal.TEN));
 
         assertThat(result.block())
             .isNotNull()

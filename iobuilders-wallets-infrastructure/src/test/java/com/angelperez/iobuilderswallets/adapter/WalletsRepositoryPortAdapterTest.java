@@ -13,6 +13,8 @@ import org.mockito.Mockito;
 import org.springframework.dao.DataIntegrityViolationException;
 import reactor.core.publisher.Mono;
 
+import java.math.BigDecimal;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @TestMethodOrder(MethodOrderer.MethodName.class)
@@ -32,19 +34,18 @@ public class WalletsRepositoryPortAdapterTest {
     public void getWallet_onExistingWallet_returnsTheWallet() {
         Mockito.when(walletsRepository.findById("testId")).thenReturn(Mono.just(new WalletEntity()
             .setId("testId")
-            .setEmail("testEmail")
-            .setPhone(666999666)
-            .setName("testName")
-            .setSurname("testSurname")));
+            .setId("testId")
+            .setOwner("testOwner")
+            .setAlias("testAlias")
+            .setBalance(BigDecimal.TEN)));
 
         Mono<Wallet> result = walletsRepositoryPortAdapter.getWallet("testId");
 
         assertThat(result.block()).isEqualTo(new Wallet()
             .setId("testId")
-            .setEmail("testEmail")
-            .setPhone(666999666)
-            .setName("testName")
-            .setSurname("testSurname"));
+            .setOwner("testOwner")
+            .setAlias("testAlias")
+            .setBalance(BigDecimal.TEN));
     }
 
     @Test
@@ -60,20 +61,18 @@ public class WalletsRepositoryPortAdapterTest {
     public void saveWallet_onNewWallet_returnsOK() {
         WalletEntity entity = new WalletEntity()
             .setId("testId")
-            .setEmail("testEmail")
-            .setPhone(666999666)
-            .setName("testName")
-            .setSurname("testSurname");
+            .setOwner("testOwner")
+            .setAlias("testAlias")
+            .setBalance(BigDecimal.TEN);
 
         Mockito.when(walletsRepository.findById("testId")).thenReturn(Mono.empty());
         Mockito.when(walletsRepository.save(Mockito.any())).thenReturn(Mono.just(entity));
 
         Mono<OperationResult> result = walletsRepositoryPortAdapter.saveWallet(new Wallet()
             .setId("testId")
-            .setEmail("testEmail")
-            .setPhone(666999666)
-            .setName("testName")
-            .setSurname("testSurname"));
+            .setOwner("testOwner")
+            .setAlias("testAlias")
+            .setBalance(BigDecimal.TEN));
 
         assertThat(result.block()).isEqualTo(OperationResult.OK);
     }
@@ -82,19 +81,17 @@ public class WalletsRepositoryPortAdapterTest {
     public void saveWallet_onExistingWallet_returnsConflict() {
         WalletEntity entity = new WalletEntity()
             .setId("testId")
-            .setEmail("testEmail")
-            .setPhone(666999666)
-            .setName("testName")
-            .setSurname("testSurname");
+            .setOwner("testOwner")
+            .setAlias("testAlias")
+            .setBalance(BigDecimal.TEN);
 
         Mockito.when(walletsRepository.findById("testId")).thenReturn(Mono.just(entity));
 
         Mono<OperationResult> result = walletsRepositoryPortAdapter.saveWallet(new Wallet()
             .setId("testId")
-            .setEmail("testEmail")
-            .setPhone(666999666)
-            .setName("testName")
-            .setSurname("testSurname"));
+            .setOwner("testOwner")
+            .setAlias("testAlias")
+            .setBalance(BigDecimal.TEN));
 
         assertThat(result.block()).isEqualTo(OperationResult.CONFLICT);
     }
@@ -106,10 +103,9 @@ public class WalletsRepositoryPortAdapterTest {
 
         Mono<OperationResult> result = walletsRepositoryPortAdapter.saveWallet(new Wallet()
             .setId("testId")
-            .setEmail("testEmail")
-            .setPhone(666999666)
-            .setName("testName")
-            .setSurname("testSurname"));
+            .setOwner("testOwner")
+            .setAlias("testAlias")
+            .setBalance(BigDecimal.TEN));
 
         assertThat(result.block()).isEqualTo(OperationResult.ERROR);
     }
@@ -122,10 +118,9 @@ public class WalletsRepositoryPortAdapterTest {
 
         Mono<OperationResult> result = walletsRepositoryPortAdapter.saveWallet(new Wallet()
             .setId("testId")
-            .setEmail("testEmail")
-            .setPhone(666999666)
-            .setName("testName")
-            .setSurname("testSurname"));
+            .setOwner("testOwner")
+            .setAlias("testAlias")
+            .setBalance(BigDecimal.TEN));
 
         assertThat(result.block()).isEqualTo(OperationResult.ERROR);
     }
@@ -134,20 +129,18 @@ public class WalletsRepositoryPortAdapterTest {
     public void updateWallet_onExistingWallet_returnsOK() {
         WalletEntity entity = new WalletEntity()
             .setId("testId")
-            .setEmail("testEmail")
-            .setPhone(666999666)
-            .setName("testName")
-            .setSurname("testSurname");
+            .setOwner("testOwner")
+            .setAlias("testAlias")
+            .setBalance(BigDecimal.TEN);
 
         Mockito.when(walletsRepository.findById("testId")).thenReturn(Mono.just(entity));
         Mockito.when(walletsRepository.save(Mockito.any())).thenReturn(Mono.just(entity));
 
         Mono<OperationResult> result = walletsRepositoryPortAdapter.updateWallet(new Wallet()
             .setId("testId")
-            .setEmail("testEmail")
-            .setPhone(666999666)
-            .setName("testName")
-            .setSurname("testSurname"));
+            .setOwner("testOwner")
+            .setAlias("testAlias")
+            .setBalance(BigDecimal.TEN));
 
         assertThat(result.block()).isEqualTo(OperationResult.OK);
     }
@@ -158,10 +151,9 @@ public class WalletsRepositoryPortAdapterTest {
 
         Mono<OperationResult> result = walletsRepositoryPortAdapter.updateWallet(new Wallet()
             .setId("testId")
-            .setEmail("testEmail")
-            .setPhone(666999666)
-            .setName("testName")
-            .setSurname("testSurname"));
+            .setOwner("testOwner")
+            .setAlias("testAlias")
+            .setBalance(BigDecimal.TEN));
 
         assertThat(result.block()).isEqualTo(OperationResult.NOT_FOUND);
     }
@@ -173,10 +165,9 @@ public class WalletsRepositoryPortAdapterTest {
 
         Mono<OperationResult> result = walletsRepositoryPortAdapter.updateWallet(new Wallet()
             .setId("testId")
-            .setEmail("testEmail")
-            .setPhone(666999666)
-            .setName("testName")
-            .setSurname("testSurname"));
+            .setOwner("testOwner")
+            .setAlias("testAlias")
+            .setBalance(BigDecimal.TEN));
 
         assertThat(result.block()).isEqualTo(OperationResult.ERROR);
     }
@@ -185,10 +176,9 @@ public class WalletsRepositoryPortAdapterTest {
     public void updateWallet_onErrorSaving_returnsError2() {
         WalletEntity entity = new WalletEntity()
             .setId("testId")
-            .setEmail("testEmail")
-            .setPhone(666999666)
-            .setName("testName")
-            .setSurname("testSurname");
+            .setOwner("testOwner")
+            .setAlias("testAlias")
+            .setBalance(BigDecimal.TEN);
 
         Mockito.when(walletsRepository.findById("testId")).thenReturn(Mono.just(entity));
         Mockito.when(walletsRepository.save(Mockito.any()))
@@ -196,10 +186,9 @@ public class WalletsRepositoryPortAdapterTest {
 
         Mono<OperationResult> result = walletsRepositoryPortAdapter.updateWallet(new Wallet()
             .setId("testId")
-            .setEmail("testEmail")
-            .setPhone(666999666)
-            .setName("testName")
-            .setSurname("testSurname"));
+            .setOwner("testOwner")
+            .setAlias("testAlias")
+            .setBalance(BigDecimal.TEN));
 
         assertThat(result.block()).isEqualTo(OperationResult.ERROR);
     }
@@ -227,10 +216,9 @@ public class WalletsRepositoryPortAdapterTest {
     public void deleteWallet_onErrorDeleting_returnsError2() {
         WalletEntity entity = new WalletEntity()
             .setId("testId")
-            .setEmail("testEmail")
-            .setPhone(666999666)
-            .setName("testName")
-            .setSurname("testSurname");
+            .setOwner("testOwner")
+            .setAlias("testAlias")
+            .setBalance(BigDecimal.TEN);
 
         Mockito.when(walletsRepository.findById("testId")).thenReturn(Mono.just(entity));
         Mockito.when(walletsRepository.deleteById("testId"))

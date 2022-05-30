@@ -3,27 +3,33 @@ package com.angelperez.iobuilderswallets.r2dbc.entity;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.domain.Persistable;
+import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
-@Table(name = "wallets")
+@Table(name = "deposits")
 @Accessors(chain = true)
-public class WalletEntity implements Persistable<String> {
+public class DepositEntity implements Persistable<Long> {
 
     @Id
-    private String id;
+    private Long id;
 
-    private String owner;
+    @Column("wallet_id")
+    private String walletId;
 
-    private String alias;
+    private BigDecimal amount;
 
-    private BigDecimal balance;
+    @Column("request_time")
+    @CreatedDate
+    private LocalDateTime requestTime;
 
     @Transient
     private boolean isNew;

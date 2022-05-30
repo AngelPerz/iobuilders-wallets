@@ -10,6 +10,8 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.mockito.Mockito;
 import reactor.core.publisher.Mono;
 
+import java.math.BigDecimal;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @TestMethodOrder(MethodOrderer.MethodName.class)
@@ -29,10 +31,9 @@ public class WalletsServiceImplTest {
     public void getWallet_onAnyCall_returnsTheRepositoryPortResult() {
         Wallet wallet = new Wallet()
             .setId("testId")
-            .setEmail("testEmail")
-            .setPhone(666999666)
-            .setName("testName")
-            .setSurname("testSurname");
+            .setOwner("testOwner")
+            .setAlias("testAlias")
+            .setBalance(BigDecimal.TEN);
 
         Mockito.when(walletsRepositoryPort.getWallet("testId")).thenReturn(Mono.just(wallet));
 
@@ -45,10 +46,9 @@ public class WalletsServiceImplTest {
     public void saveWallet_onAnyCall_returnsTheRepositoryPortResult() {
         Wallet wallet = new Wallet()
             .setId("testId")
-            .setEmail("testEmail")
-            .setPhone(666999666)
-            .setName("testName")
-            .setSurname("testSurname");
+            .setOwner("testOwner")
+            .setAlias("testAlias")
+            .setBalance(BigDecimal.TEN);
 
         Mockito.when(walletsRepositoryPort.saveWallet(wallet)).thenReturn(Mono.just(OperationResult.OK));
 
@@ -61,10 +61,9 @@ public class WalletsServiceImplTest {
     public void updateWallet_onAnyCall_returnsTheRepositoryPortResult() {
         Wallet wallet = new Wallet()
             .setId("testId")
-            .setEmail("testEmail")
-            .setPhone(666999666)
-            .setName("testName")
-            .setSurname("testSurname");
+            .setOwner("testOwner")
+            .setAlias("testAlias")
+            .setBalance(BigDecimal.TEN);
 
         Mockito.when(walletsRepositoryPort.updateWallet(wallet)).thenReturn(Mono.just(OperationResult.OK));
 
