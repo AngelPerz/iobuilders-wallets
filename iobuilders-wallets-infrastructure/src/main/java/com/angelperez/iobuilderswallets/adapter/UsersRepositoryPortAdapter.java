@@ -6,7 +6,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.client.WebClient;
-import org.springframework.web.reactive.function.client.WebClientResponseException;
 import reactor.core.publisher.Mono;
 
 @Slf4j
@@ -30,6 +29,6 @@ public class UsersRepositoryPortAdapter implements UsersRepositoryPort {
                     return Mono.just(false);
                 }
             });
-            //TODO controlar excepcion;
+        //TODO controlar excepcion;
     }
 }

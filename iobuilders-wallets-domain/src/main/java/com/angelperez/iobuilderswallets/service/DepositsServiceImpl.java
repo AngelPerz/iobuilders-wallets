@@ -22,7 +22,7 @@ public class DepositsServiceImpl implements DepositsService {
         return walletsRepositoryPort.getWallet(deposit.getWalletId())
             .flatMap(wallet -> depositsRepositoryPort.saveDeposit(deposit)
                 .flatMap(result -> {
-                    if (result == OperationResult.OK){
+                    if (result == OperationResult.OK) {
                         return walletsRepositoryPort.updateWallet(wallet.setBalance(wallet.getBalance().add(deposit.getAmount())));
                     } else {
                         return Mono.just(result);
