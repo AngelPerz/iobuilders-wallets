@@ -26,10 +26,14 @@ public class WalletsServiceImpl implements WalletsService {
 
     @Override
     public Mono<OperationResult> saveWallet(Wallet wallet) {
-        usersRepositoryPort.existsUser(wallet.getOwner()).subscribe(t -> log.info(t.toString()));
-
-        wallet.setBalance(BigDecimal.ZERO);
-        return walletsRepositoryPort.saveWallet(wallet);
+        return usersRepositoryPort.existsUser(wallet.getOwner())
+            .flatMap(exists -> {
+                if (!exists) {
+                    return Mono.just(OperationResult.NOT_FOUND);
+                } else {
+                    return walletsRepositoryPort.saveWallet(wallet.setBalance(BigDecimal.ZERO));
+                }
+            });
     }
 
     @Override

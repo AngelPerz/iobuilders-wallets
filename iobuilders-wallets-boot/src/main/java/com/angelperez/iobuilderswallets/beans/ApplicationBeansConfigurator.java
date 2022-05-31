@@ -1,18 +1,24 @@
 package com.angelperez.iobuilderswallets.beans;
 
 import com.angelperez.iobuilderswallets.adapter.DepositsRepositoryPortAdapter;
+import com.angelperez.iobuilderswallets.adapter.MovementsRepositoryPortAdapter;
 import com.angelperez.iobuilderswallets.adapter.UsersRepositoryPortAdapter;
 import com.angelperez.iobuilderswallets.adapter.WalletsRepositoryPortAdapter;
 import com.angelperez.iobuilderswallets.applicationports.DepositsService;
+import com.angelperez.iobuilderswallets.applicationports.MovementsService;
 import com.angelperez.iobuilderswallets.applicationports.WalletsService;
 import com.angelperez.iobuilderswallets.infrastructureports.DepositsRepositoryPort;
+import com.angelperez.iobuilderswallets.infrastructureports.MovementsRepositoryPort;
 import com.angelperez.iobuilderswallets.infrastructureports.UsersRepositoryPort;
 import com.angelperez.iobuilderswallets.infrastructureports.WalletsRepositoryPort;
 import com.angelperez.iobuilderswallets.mapper.DepositEntitiesMapper;
+import com.angelperez.iobuilderswallets.mapper.MovementEntitiesMapper;
 import com.angelperez.iobuilderswallets.mapper.WalletEntitiesMapper;
 import com.angelperez.iobuilderswallets.r2dbc.repository.DepositsRepository;
+import com.angelperez.iobuilderswallets.r2dbc.repository.MovementsRepository;
 import com.angelperez.iobuilderswallets.r2dbc.repository.WalletsRepository;
 import com.angelperez.iobuilderswallets.service.DepositsServiceImpl;
+import com.angelperez.iobuilderswallets.service.MovementsServiceImpl;
 import com.angelperez.iobuilderswallets.service.WalletsServiceImpl;
 import io.netty.channel.ChannelOption;
 import io.netty.handler.timeout.ReadTimeoutHandler;
@@ -54,6 +60,16 @@ public class ApplicationBeansConfigurator {
     @Bean
     public DepositsRepositoryPort getDepositsRepository(DepositsRepository depositsRepository, DepositEntitiesMapper depositEntitiesMapper) {
         return new DepositsRepositoryPortAdapter(depositsRepository, depositEntitiesMapper);
+    }
+
+    @Bean
+    public MovementsService getMovementsService(WalletsRepositoryPort walletsRepositoryPort, MovementsRepositoryPort movementsRepositoryPort) {
+        return new MovementsServiceImpl(walletsRepositoryPort, movementsRepositoryPort);
+    }
+
+    @Bean
+    public MovementsRepositoryPort getMovementsRepository(MovementsRepository movementsRepository, MovementEntitiesMapper movementEntitiesMapper) {
+        return new MovementsRepositoryPortAdapter(movementsRepository, movementEntitiesMapper);
     }
 
     @Bean

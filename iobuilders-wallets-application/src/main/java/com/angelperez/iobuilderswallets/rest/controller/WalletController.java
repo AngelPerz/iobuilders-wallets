@@ -12,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
+import javax.validation.Valid;
+
 @AllArgsConstructor
 @RestController
 public class WalletController {
@@ -34,10 +36,11 @@ public class WalletController {
         @ApiResponse(responseCode = "201", description = "Wallet created"),
         @ApiResponse(responseCode = "409", description = "Wallet already exists")})
     @PostMapping("/wallets")
-    public Mono<ResponseEntity<Void>> createWallet(@RequestBody WalletWriteDTO walletDTO) {
+    public Mono<ResponseEntity<Void>> createWallet(@Valid @RequestBody WalletWriteDTO walletDTO) {
         return walletsService.saveWallet(walletsMapper.toDomainModel(walletDTO))
             .map(res -> switch (res) {
                 case OK -> new ResponseEntity<>(HttpStatus.CREATED);
+                case NOT_FOUND -> new ResponseEntity<>(HttpStatus.NOT_FOUND);
                 case CONFLICT -> new ResponseEntity<>(HttpStatus.CONFLICT);
                 default -> new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
             });
@@ -47,7 +50,7 @@ public class WalletController {
         @ApiResponse(responseCode = "200", description = "Wallet updated"),
         @ApiResponse(responseCode = "404", description = "Wallet not found")})
     @PutMapping("/wallets")
-    public Mono<ResponseEntity<Void>> updateWallet(@RequestBody WalletWriteDTO walletDTO) {
+    public Mono<ResponseEntity<Void>> updateWallet(@Valid @RequestBody WalletWriteDTO walletDTO) {
         return walletsService.updateWallet(walletsMapper.toDomainModel(walletDTO))
             .map(res -> switch (res) {
                 case OK -> new ResponseEntity<>(HttpStatus.OK);

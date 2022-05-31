@@ -1,8 +1,8 @@
 package com.angelperez.iobuilderswallets.rest.controller;
 
-import com.angelperez.iobuilderswallets.applicationports.DepositsService;
-import com.angelperez.iobuilderswallets.rest.dto.DepositWriteDTO;
-import com.angelperez.iobuilderswallets.rest.mapper.DepositsMapper;
+import com.angelperez.iobuilderswallets.applicationports.MovementsService;
+import com.angelperez.iobuilderswallets.rest.dto.MovementWriteDTO;
+import com.angelperez.iobuilderswallets.rest.mapper.MovementsMapper;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.AllArgsConstructor;
@@ -17,18 +17,18 @@ import javax.validation.Valid;
 
 @AllArgsConstructor
 @RestController
-public class DepositController {
+public class MovementController {
 
-    private DepositsService depositsService;
+    private MovementsService movementsService;
 
-    private DepositsMapper depositsMapper;
+    private MovementsMapper movementsMapper;
 
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "201", description = "Deposit created"),
+        @ApiResponse(responseCode = "201", description = "Movement created"),
         @ApiResponse(responseCode = "404", description = "Wallet related not found")})
-    @PostMapping("/deposits")
-    public Mono<ResponseEntity<Void>> createDeposit(@Valid @RequestBody DepositWriteDTO depositDTO) {
-        return depositsService.saveDeposit(depositsMapper.toDomainModel(depositDTO))
+    @PostMapping("/movements")
+    public Mono<ResponseEntity<Void>> createMovement(@Valid @RequestBody MovementWriteDTO movementDTO) {
+        return movementsService.saveMovement(movementsMapper.toDomainModel(movementDTO))
             .map(res -> switch (res) {
                 case OK -> new ResponseEntity<>(HttpStatus.CREATED);
                 case NOT_FOUND -> new ResponseEntity<>(HttpStatus.NOT_FOUND);

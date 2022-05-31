@@ -1,6 +1,7 @@
 package com.angelperez.iobuilderswallets.service;
 
 import com.angelperez.iobuilderswallets.common.OperationResult;
+import com.angelperez.iobuilderswallets.infrastructureports.UsersRepositoryPort;
 import com.angelperez.iobuilderswallets.infrastructureports.WalletsRepositoryPort;
 import com.angelperez.iobuilderswallets.model.Wallet;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,18 +14,23 @@ import reactor.core.publisher.Mono;
 import java.math.BigDecimal;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 
 @TestMethodOrder(MethodOrderer.MethodName.class)
 public class WalletsServiceImplTest {
 
     private WalletsRepositoryPort walletsRepositoryPort;
 
+    private UsersRepositoryPort usersRepositoryPort;
+
     private WalletsServiceImpl walletsService;
 
     @BeforeEach
     void setUp() {
         walletsRepositoryPort = Mockito.mock(WalletsRepositoryPort.class);
-        walletsService = new WalletsServiceImpl(walletsRepositoryPort);
+        usersRepositoryPort = Mockito.mock(UsersRepositoryPort.class);
+        walletsService = new WalletsServiceImpl(walletsRepositoryPort, usersRepositoryPort);
     }
 
     @Test
@@ -43,7 +49,7 @@ public class WalletsServiceImplTest {
     }
 
     @Test
-    public void saveWallet_onAnyCall_returnsTheRepositoryPortResult() {
+    public void saveWallet_onExistingOwner_callsToSaveTheWallet() {
         Wallet wallet = new Wallet()
             .setId("testId")
             .setOwner("testOwner")
@@ -51,10 +57,27 @@ public class WalletsServiceImplTest {
             .setBalance(BigDecimal.TEN);
 
         Mockito.when(walletsRepositoryPort.saveWallet(wallet)).thenReturn(Mono.just(OperationResult.OK));
+        Mockito.when(usersRepositoryPort.existsUser("testOwner")).thenReturn(Mono.just(true));
 
         Mono<OperationResult> result = walletsService.saveWallet(wallet);
 
         assertThat(result.block()).isEqualTo(OperationResult.OK);
+    }
+
+    @Test
+    public void saveWallet_onNotExistingOwner_returnsNotFound() {
+        Wallet wallet = new Wallet()
+            .setId("testId")
+            .setOwner("testOwner")
+            .setAlias("testAlias")
+            .setBalance(BigDecimal.TEN);
+
+        Mockito.when(usersRepositoryPort.existsUser("testOwner")).thenReturn(Mono.just(false));
+
+        Mono<OperationResult> result = walletsService.saveWallet(wallet);
+
+        assertThat(result.block()).isEqualTo(OperationResult.OK);
+        verify(walletsRepositoryPort, never()).saveWallet(wallet);
     }
 
     @Test

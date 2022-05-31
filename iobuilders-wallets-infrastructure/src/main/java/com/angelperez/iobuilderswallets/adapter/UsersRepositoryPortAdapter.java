@@ -25,10 +25,13 @@ public class UsersRepositoryPortAdapter implements UsersRepositoryPort {
                 } else if (response.statusCode() == HttpStatus.NOT_FOUND) {
                     return Mono.just(false);
                 } else {
-                    log.error(String.format("Error getting user for id [%s], received status code was [%s]", ownerId, response.statusCode()));
+                    log.error("Error getting user for id [{}], received status code was [{}]", ownerId, response.statusCode());
                     return Mono.just(false);
                 }
+            })
+            .onErrorResume(err -> {
+                log.error("Error performing a call to retrieve the user with id [{}]", ownerId);
+                return Mono.just(false);
             });
-        //TODO controlar excepcion;
     }
 }

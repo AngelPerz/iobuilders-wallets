@@ -4,19 +4,22 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
 @Accessors(chain = true)
-public class DepositWriteDTO {
+public class MovementReadDTO {
 
-    @NotNull
-    private String walletId;
+    private Long id;
 
-    @Min(value = 0, message = "Amount must be positive")
+    private String originWallet;
+
+    private String destinyWallet;
+
     private BigDecimal amount;
+
+    private LocalDateTime creationTime;
 
 }
