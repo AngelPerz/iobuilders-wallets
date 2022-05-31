@@ -1,6 +1,7 @@
 package com.angelperez.iobuilderswallets.rest.controller;
 
 import com.angelperez.iobuilderswallets.applicationports.WalletsService;
+import com.angelperez.iobuilderswallets.rest.dto.WalletBalanceDTO;
 import com.angelperez.iobuilderswallets.rest.dto.WalletReadDTO;
 import com.angelperez.iobuilderswallets.rest.dto.WalletWriteDTO;
 import com.angelperez.iobuilderswallets.rest.mapper.WalletsMapper;
@@ -29,6 +30,16 @@ public class WalletController {
     public Mono<ResponseEntity<WalletReadDTO>> getWalletById(@PathVariable(value = "id") String id) {
         return walletsService.getWallet(id)
             .map(t -> ResponseEntity.ok(walletsMapper.toDTO(t)))
+            .defaultIfEmpty(ResponseEntity.notFound().build());
+    }
+
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Wallet balance retrieved for the given id"),
+        @ApiResponse(responseCode = "404", description = "Wallet not found")})
+    @GetMapping("/wallets/{id}/balance")
+    public Mono<ResponseEntity<WalletBalanceDTO>> getWalletBalance(@PathVariable(value = "id") String id) {
+        return walletsService.getWalletBalance(id)
+            .map(t -> ResponseEntity.ok(walletsMapper.toBalanceDto(t)))
             .defaultIfEmpty(ResponseEntity.notFound().build());
     }
 

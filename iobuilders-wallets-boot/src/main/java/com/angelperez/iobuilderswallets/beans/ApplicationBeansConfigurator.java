@@ -43,8 +43,9 @@ public class ApplicationBeansConfigurator {
     private String usersPath;
 
     @Bean
-    public WalletsService getWalletsService(WalletsRepositoryPort walletsRepositoryPort, UsersRepositoryPort usersRepositoryPort) {
-        return new WalletsServiceImpl(walletsRepositoryPort, usersRepositoryPort);
+    public WalletsService getWalletsService(WalletsRepositoryPort walletsRepositoryPort, UsersRepositoryPort usersRepositoryPort,
+                                            MovementsRepositoryPort movementsRepositoryPort, DepositsRepositoryPort depositsRepositoryPort) {
+        return new WalletsServiceImpl(walletsRepositoryPort, usersRepositoryPort, movementsRepositoryPort, depositsRepositoryPort);
     }
 
     @Bean

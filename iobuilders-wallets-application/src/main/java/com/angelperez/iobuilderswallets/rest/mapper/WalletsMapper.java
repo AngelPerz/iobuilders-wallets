@@ -1,6 +1,8 @@
 package com.angelperez.iobuilderswallets.rest.mapper;
 
+import com.angelperez.iobuilderswallets.model.Balance;
 import com.angelperez.iobuilderswallets.model.Wallet;
+import com.angelperez.iobuilderswallets.rest.dto.WalletBalanceDTO;
 import com.angelperez.iobuilderswallets.rest.dto.WalletReadDTO;
 import com.angelperez.iobuilderswallets.rest.dto.WalletWriteDTO;
 import org.mapstruct.Mapper;
@@ -12,4 +14,5 @@ public interface WalletsMapper {
 
     Wallet toDomainModel(WalletWriteDTO walletDTO);
 
+    WalletBalanceDTO toBalanceDto(Balance balance);
 }

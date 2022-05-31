@@ -1,6 +1,8 @@
 package com.angelperez.iobuilderswallets.service;
 
 import com.angelperez.iobuilderswallets.common.OperationResult;
+import com.angelperez.iobuilderswallets.infrastructureports.DepositsRepositoryPort;
+import com.angelperez.iobuilderswallets.infrastructureports.MovementsRepositoryPort;
 import com.angelperez.iobuilderswallets.infrastructureports.UsersRepositoryPort;
 import com.angelperez.iobuilderswallets.infrastructureports.WalletsRepositoryPort;
 import com.angelperez.iobuilderswallets.model.Wallet;
@@ -24,13 +26,20 @@ public class WalletsServiceImplTest {
 
     private UsersRepositoryPort usersRepositoryPort;
 
+    private MovementsRepositoryPort movementsRepositoryPort;
+
+    private DepositsRepositoryPort depositsRepositoryPort;
+
     private WalletsServiceImpl walletsService;
 
     @BeforeEach
     void setUp() {
         walletsRepositoryPort = Mockito.mock(WalletsRepositoryPort.class);
         usersRepositoryPort = Mockito.mock(UsersRepositoryPort.class);
-        walletsService = new WalletsServiceImpl(walletsRepositoryPort, usersRepositoryPort);
+        movementsRepositoryPort = Mockito.mock(MovementsRepositoryPort.class);
+        depositsRepositoryPort = Mockito.mock(DepositsRepositoryPort.class);
+        walletsService = new WalletsServiceImpl(walletsRepositoryPort, usersRepositoryPort,
+            movementsRepositoryPort, depositsRepositoryPort);
     }
 
     @Test
