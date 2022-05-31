@@ -2,7 +2,9 @@ package com.angelperez.iobuilderswallets.rest.controller;
 
 import com.angelperez.iobuilderswallets.applicationports.WalletsService;
 import com.angelperez.iobuilderswallets.common.OperationResult;
+import com.angelperez.iobuilderswallets.model.Balance;
 import com.angelperez.iobuilderswallets.model.Wallet;
+import com.angelperez.iobuilderswallets.rest.dto.WalletBalanceDTO;
 import com.angelperez.iobuilderswallets.rest.dto.WalletReadDTO;
 import com.angelperez.iobuilderswallets.rest.dto.WalletWriteDTO;
 import com.angelperez.iobuilderswallets.rest.mapper.WalletsMapperImpl;
@@ -59,6 +61,40 @@ public class WalletControllerTest {
         Mockito.when(walletsService.getWallet("testId")).thenReturn(Mono.empty());
 
         Mono<ResponseEntity<WalletReadDTO>> result = walletController.getWalletById("testId");
+
+        assertThat(result.block())
+            .isNotNull()
+            .extracting(ResponseEntity::getStatusCode)
+            .isEqualTo(HttpStatus.NOT_FOUND);
+    }
+
+    @Test
+    public void getWalletBalance_onExistingWallet_returnsTheWallet() {
+        Mockito.when(walletsService.getWalletBalance("testId")).thenReturn(Mono.just(new Balance()
+            .setId("testId")
+            .setOwner("testOwner")
+            .setAlias("testAlias")
+            .setBalance(BigDecimal.TEN)));
+
+        Mono<ResponseEntity<WalletBalanceDTO>> result = walletController.getWalletBalance("testId");
+
+        assertThat(result.block()).satisfies(
+            res -> {
+                assertThat(res.getStatusCode()).isEqualTo(HttpStatus.OK);
+                assertThat(res.getBody()).isEqualTo(new WalletBalanceDTO()
+                    .setId("testId")
+                    .setOwner("testOwner")
+                    .setAlias("testAlias")
+                    .setBalance(BigDecimal.TEN));
+            }
+        );
+    }
+
+    @Test
+    public void getWalletBalance_onNotExistingWallet_returnsNotFound() {
+        Mockito.when(walletsService.getWalletBalance("testId")).thenReturn(Mono.empty());
+
+        Mono<ResponseEntity<WalletBalanceDTO>> result = walletController.getWalletBalance("testId");
 
         assertThat(result.block())
             .isNotNull()
