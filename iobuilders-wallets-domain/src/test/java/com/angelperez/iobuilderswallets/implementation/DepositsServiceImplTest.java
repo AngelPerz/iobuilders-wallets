@@ -1,4 +1,4 @@
-package com.angelperez.iobuilderswallets.service;
+package com.angelperez.iobuilderswallets.implementation;
 
 import com.angelperez.iobuilderswallets.common.OperationResult;
 import com.angelperez.iobuilderswallets.infrastructureports.DepositsRepositoryPort;
